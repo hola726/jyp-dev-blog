@@ -1,0 +1,94 @@
+---
+title: "Next.js 블로그 SEO 최적화 전략"
+slug: nextjs-blog-seo
+date: 2026-02-13
+description: "Next.js 기반 블로그의 SEO를 최적화하는 실전 전략과 구현 방법을 소개합니다."
+tags: ["Next.js", "SEO"]
+published: true
+---
+
+## 왜 SEO가 중요한가
+
+기술 블로그의 목적은 지식을 공유하는 것입니다. 아무리 좋은 글을 쓰더라도 검색에 노출되지 않으면 읽히지 않습니다.
+
+## 메타데이터 설정
+
+Next.js App Router에서는 `Metadata` API를 활용할 수 있습니다.
+
+```typescript title="layout.tsx"
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    default: "My Blog",
+    template: "%s | My Blog",
+  },
+  description: "기술 블로그입니다",
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+  },
+};
+```
+
+## Open Graph 태그
+
+SNS에서 공유될 때 미리보기를 제공합니다.
+
+```typescript title="[slug]/page.tsx" {5-10}
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = getPostBySlug(params.slug);
+
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+    },
+  };
+}
+```
+
+## JSON-LD 구조화 데이터
+
+검색 엔진이 콘텐츠를 더 잘 이해할 수 있도록 도와줍니다.
+
+```typescript
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  datePublished: post.date,
+  author: {
+    "@type": "Person",
+    name: "JYP",
+  },
+};
+```
+
+## Sitemap과 RSS
+
+검색 엔진 크롤러가 사이트 구조를 파악하는 데 도움을 줍니다.
+
+```typescript title="sitemap.ts"
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    { url: "https://blog.example.com", priority: 1 },
+    { url: "https://blog.example.com/blog", priority: 0.9 },
+  ];
+}
+```
+
+## 성능 최적화
+
+Core Web Vitals도 SEO 순위에 영향을 미칩니다.
+
+- **LCP**: 이미지 최적화, 폰트 로딩 전략
+- **FID**: JavaScript 번들 최소화
+- **CLS**: 레이아웃 시프트 방지
+
+## 결론
+
+SEO는 한 번 설정하면 끝나는 것이 아닙니다. 지속적으로 모니터링하고 개선해야 합니다. Next.js의 빌트인 기능을 최대한 활용하면 적은 노력으로 큰 효과를 얻을 수 있습니다.

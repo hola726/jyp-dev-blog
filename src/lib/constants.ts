@@ -14,9 +14,9 @@ export const siteConfig = {
   },
   postsPerPage: 10,
   giscus: {
-    repo: "" as `${string}/${string}`,
-    repoId: "",
-    category: "Comments",
-    categoryId: "",
+    repo: "hola726/jyp-dev-blog" as `${string}/${string}`,
+    repoId: "R_kgDORQqg1g",
+    category: "General",
+    categoryId: "DIC_kwDORQqg1s4C2edG",
   },
 } as const;

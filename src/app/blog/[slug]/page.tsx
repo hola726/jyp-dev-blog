@@ -1,0 +1,149 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getPublishedPosts, getPostBySlug, getAdjacentPosts } from "@/lib/posts";
+import { siteConfig } from "@/lib/constants";
+import MDXContent from "@/components/mdx/MDXContent";
+import TOC from "@/components/blog/TOC";
+import TagList from "@/components/blog/TagList";
+import Giscus from "@/components/comments/Giscus";
+
+interface PostPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const posts = getPublishedPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) return {};
+
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      publishedTime: post.date,
+      url: `${siteConfig.url}/blog/${post.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
+  };
+}
+
+export default async function PostPage({ params }: PostPageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+
+  if (!post) notFound();
+
+  const { prev, next } = getAdjacentPosts(slug);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    author: {
+      "@type": "Person",
+      name: siteConfig.author.name,
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <article className="mx-auto max-w-[680px]">
+        {/* Header */}
+        <header className="mb-10">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl leading-tight">
+            {post.title}
+          </h1>
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-400 dark:text-slate-500">
+            <span>
+              {format(new Date(post.date), "yyyy년 M월 d일", { locale: ko })}
+            </span>
+            <span>·</span>
+            <span>{post.readingTime}분 읽기</span>
+          </div>
+          <div className="mt-4">
+            <TagList tags={post.tags} />
+          </div>
+        </header>
+
+        {/* Mobile TOC */}
+        <TOC content={post.body} />
+
+        {/* Content + Desktop TOC */}
+        <div className="relative xl:grid xl:grid-cols-[1fr_200px] xl:gap-10">
+          <div className="min-w-0 prose-medium">
+            <MDXContent code={post.body} />
+          </div>
+
+          {/* Desktop TOC sidebar */}
+          <aside className="hidden xl:block">
+            <TOC content={post.body} />
+          </aside>
+        </div>
+
+        {/* Post navigation */}
+        <nav className="mt-16 grid grid-cols-2 gap-4 border-t border-slate-200 pt-8 dark:border-slate-800">
+          {prev ? (
+            <Link
+              href={`/blog/${prev.slug}`}
+              className="group flex items-center gap-2 py-3 transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100" />
+              <div className="min-w-0">
+                <p className="text-xs text-slate-400 dark:text-slate-500">이전 글</p>
+                <p className="mt-1 truncate text-sm font-medium text-slate-700 group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-slate-100 transition-colors">
+                  {prev.title}
+                </p>
+              </div>
+            </Link>
+          ) : (
+            <div />
+          )}
+          {next ? (
+            <Link
+              href={`/blog/${next.slug}`}
+              className="group flex items-center justify-end gap-2 py-3 text-right transition-colors"
+            >
+              <div className="min-w-0">
+                <p className="text-xs text-slate-400 dark:text-slate-500">다음 글</p>
+                <p className="mt-1 truncate text-sm font-medium text-slate-700 group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-slate-100 transition-colors">
+                  {next.title}
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100" />
+            </Link>
+          ) : (
+            <div />
+          )}
+        </nav>
+
+        {/* Comments */}
+        <section className="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">
+          <Giscus />
+        </section>
+      </article>
+    </>
+  );
+}

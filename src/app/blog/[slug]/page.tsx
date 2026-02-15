@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getPublishedPosts, getPostBySlug, getAdjacentPosts } from "@/lib/posts";
+import { getPublishedPosts, getPostBySlug, getAdjacentPosts, getRelatedPosts } from "@/lib/posts";
 import { siteConfig } from "@/lib/constants";
 import MDXContent from "@/components/mdx/MDXContent";
 import TOC from "@/components/blog/TOC";
@@ -50,6 +50,7 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post) notFound();
 
   const { prev, next } = getAdjacentPosts(slug);
+  const relatedPosts = getRelatedPosts(slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -138,6 +139,32 @@ export default async function PostPage({ params }: PostPageProps) {
             <div />
           )}
         </nav>
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <section className="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+              관련 글
+            </h2>
+            <ul className="mt-4 space-y-3">
+              {relatedPosts.map((related) => (
+                <li key={related.slug}>
+                  <Link
+                    href={`/blog/${related.slug}`}
+                    className="group block"
+                  >
+                    <p className="font-medium text-slate-700 group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-slate-100 transition-colors">
+                      {related.title}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 line-clamp-1">
+                      {related.description}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Comments */}
         <section className="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">

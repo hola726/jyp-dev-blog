@@ -29,6 +29,25 @@ export function getAllTags(): Record<string, number> {
   return tags;
 }
 
+export function getRelatedPosts(slug: string, limit = 3): Post[] {
+  const post = getPostBySlug(slug);
+  if (!post) return [];
+
+  const allPosts = getPublishedPosts().filter((p) => p.slug !== slug);
+  const scored = allPosts.map((p) => {
+    const shared = p.tags.filter((t) =>
+      post.tags.map((pt) => pt.toLowerCase()).includes(t.toLowerCase())
+    ).length;
+    return { post: p, score: shared };
+  });
+
+  return scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.post);
+}
+
 export function getAdjacentPosts(slug: string) {
   const allPosts = getPublishedPosts();
   const index = allPosts.findIndex((post) => post.slug === slug);

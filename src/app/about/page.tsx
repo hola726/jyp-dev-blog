@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="prose prose-slate mx-auto max-w-[680px] dark:prose-invert">
+    <div className="prose prose-slate mx-auto max-w-[720px] dark:prose-invert">
       <h1>About</h1>
 
       <p>

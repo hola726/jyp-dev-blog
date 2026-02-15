@@ -57,7 +57,7 @@ export default function TOC({ content }: { content: string }) {
     <>
       {/* Desktop TOC */}
       <nav className="hidden xl:block" aria-label="목차">
-        <div className="sticky top-24">
+        <div>
           <h3 className="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">
             목차
           </h3>

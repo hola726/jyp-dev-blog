@@ -71,7 +71,7 @@ export default async function PostPage({ params }: PostPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="mx-auto max-w-[680px]">
+      <article className="relative mx-auto max-w-[768px]">
         {/* Header */}
         <header className="mb-10">
           <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl leading-tight">
@@ -92,17 +92,17 @@ export default async function PostPage({ params }: PostPageProps) {
         {/* Mobile TOC */}
         <TOC content={post.body} />
 
-        {/* Content + Desktop TOC */}
-        <div className="relative xl:grid xl:grid-cols-[1fr_200px] xl:gap-10">
-          <div className="min-w-0 prose-medium">
-            <MDXContent code={post.body} />
-          </div>
-
-          {/* Desktop TOC sidebar */}
-          <aside className="hidden xl:block">
-            <TOC content={post.body} />
-          </aside>
+        {/* Content */}
+        <div className="prose-medium">
+          <MDXContent code={post.body} />
         </div>
+
+        {/* Desktop TOC sidebar - positioned outside content */}
+        <aside className="hidden xl:block absolute top-0 left-full ml-10 w-[200px]">
+          <div className="sticky top-24">
+            <TOC content={post.body} />
+          </div>
+        </aside>
 
         {/* Post navigation */}
         <nav className="mt-16 grid grid-cols-2 gap-4 border-t border-slate-200 pt-8 dark:border-slate-800">

@@ -1,0 +1,82 @@
+---
+title: "Flutter 상태 관리 완벽 가이드"
+slug: flutter-state-management
+date: 2026-02-10
+description: "Flutter에서 사용할 수 있는 다양한 상태 관리 방법을 비교하고 각각의 장단점을 분석합니다."
+tags: ["Flutter", "Mobile"]
+published: true
+---
+
+## 소개
+
+Flutter 앱을 개발할 때 가장 중요한 결정 중 하나는 상태 관리 방법을 선택하는 것입니다. 이 글에서는 주요 상태 관리 솔루션을 비교해보겠습니다.
+
+## setState
+
+가장 기본적인 상태 관리 방법입니다.
+
+```dart title="counter_page.dart"
+class CounterPage extends StatefulWidget {
+  @override
+  _CounterPageState createState() => _CounterPageState();
+}
+
+class _CounterPageState extends State<CounterPage> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: Text('Count: $_count')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => setState(() => _count++),
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+## Provider
+
+Google에서 권장하는 상태 관리 패턴입니다.
+
+```dart title="counter_provider.dart" {3-4}
+class CounterProvider extends ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+}
+```
+
+## Riverpod
+
+Provider의 한계를 극복한 차세대 상태 관리 라이브러리입니다.
+
+```dart
+final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
+  return CounterNotifier();
+});
+
+class CounterNotifier extends StateNotifier<int> {
+  CounterNotifier() : super(0);
+
+  void increment() => state++;
+}
+```
+
+## 비교 정리
+
+| 방법 | 학습 곡선 | 확장성 | 테스트 용이성 |
+|------|----------|--------|-------------|
+| setState | 낮음 | 낮음 | 보통 |
+| Provider | 보통 | 높음 | 높음 |
+| Riverpod | 보통 | 높음 | 매우 높음 |
+
+## 결론
+
+프로젝트의 규모와 복잡도에 따라 적절한 상태 관리 방법을 선택하는 것이 중요합니다. 소규모 프로젝트라면 setState로 충분하고, 중대형 프로젝트라면 Riverpod을 추천합니다.

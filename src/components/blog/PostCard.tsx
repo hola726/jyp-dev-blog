@@ -14,7 +14,7 @@ export default function PostCard({ post }: { post: Post }) {
         <p className="mt-2 text-base text-slate-600 dark:text-slate-400 line-clamp-3">
           {post.description}
         </p>
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-400 dark:text-slate-500">
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
           <span>
             {format(new Date(post.date), "yyyy년 M월 d일", { locale: ko })}
           </span>

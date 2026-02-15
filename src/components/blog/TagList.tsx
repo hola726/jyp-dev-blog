@@ -7,7 +7,7 @@ export default function TagList({ tags }: { tags: string[] }) {
         <Link
           key={tag}
           href={`/tags/${tag.toLowerCase()}`}
-          className="text-sm text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
+          className="text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
         >
           #{tag}
         </Link>

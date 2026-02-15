@@ -76,7 +76,7 @@ export default async function PostPage({ params }: PostPageProps) {
           <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl leading-tight">
             {post.title}
           </h1>
-          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-400 dark:text-slate-500">
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
             <span>
               {format(new Date(post.date), "yyyy년 M월 d일", { locale: ko })}
             </span>
@@ -110,9 +110,9 @@ export default async function PostPage({ params }: PostPageProps) {
               href={`/blog/${prev.slug}`}
               className="group flex items-center gap-2 py-3 transition-colors"
             >
-              <ChevronLeft className="h-4 w-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100" />
+              <ChevronLeft className="h-4 w-4 text-slate-500 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-100" />
               <div className="min-w-0">
-                <p className="text-xs text-slate-400 dark:text-slate-500">이전 글</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">이전 글</p>
                 <p className="mt-1 truncate text-sm font-medium text-slate-700 group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-slate-100 transition-colors">
                   {prev.title}
                 </p>
@@ -127,12 +127,12 @@ export default async function PostPage({ params }: PostPageProps) {
               className="group flex items-center justify-end gap-2 py-3 text-right transition-colors"
             >
               <div className="min-w-0">
-                <p className="text-xs text-slate-400 dark:text-slate-500">다음 글</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">다음 글</p>
                 <p className="mt-1 truncate text-sm font-medium text-slate-700 group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-slate-100 transition-colors">
                   {next.title}
                 </p>
               </div>
-              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100" />
+              <ChevronRight className="h-4 w-4 text-slate-500 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-100" />
             </Link>
           ) : (
             <div />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 import { siteConfig } from "@/lib/constants";
 import ClientLayout from "@/components/layout/ClientLayout";
@@ -42,15 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <head>
-        <link
-          rel="stylesheet"
-          as="style"
-          crossOrigin="anonymous"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
-        />
-      </head>
-      <body className="bg-white text-slate-900 antialiased dark:bg-neutral-950 dark:text-slate-100" style={{ fontFamily: "'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif" }}>
+      <body className="bg-white font-[Pretendard_Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif] text-slate-900 antialiased dark:bg-neutral-950 dark:text-slate-100">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>

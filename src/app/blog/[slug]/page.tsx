@@ -96,11 +96,6 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         </header>
 
-        {/* Mobile TOC */}
-        <div className="mb-10">
-          <TOC />
-        </div>
-
         {/* Content */}
         <div className="prose-medium">
           <MDXContent code={post.body} />

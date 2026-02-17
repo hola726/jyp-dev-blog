@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostsByTag, getAllTags } from "@/lib/posts";
 import PostList from "@/components/blog/PostList";
@@ -30,7 +31,13 @@ export default async function TagPage({ params }: TagPageProps) {
   return (
     <div className="mx-auto max-w-[720px]">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+        <Link
+          href="/tags"
+          className="text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+        >
+          ← 태그 목록
+        </Link>
+        <h1 className="mt-2 text-3xl font-bold text-slate-900 dark:text-slate-100">
           <span className="text-slate-500 dark:text-slate-400">#{decodedTag}</span>
         </h1>
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">

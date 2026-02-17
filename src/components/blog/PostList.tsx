@@ -5,17 +5,33 @@ import type { Post } from "@/lib/posts";
 import PostCard from "./PostCard";
 import { siteConfig } from "@/lib/constants";
 
-export default function PostList({ posts }: { posts: Post[] }) {
+interface PostListProps {
+  posts: Post[];
+  tags?: Record<string, number>;
+}
+
+export default function PostList({ posts, tags }: PostListProps) {
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [displayCount, setDisplayCount] = useState<number>(siteConfig.postsPerPage);
   const loaderRef = useRef<HTMLDivElement>(null);
 
-  const hasMore = displayCount < posts.length;
+  const filteredPosts = selectedTag
+    ? posts.filter((post) =>
+        post.tags.some((t) => t.toLowerCase() === selectedTag)
+      )
+    : posts;
+
+  const hasMore = displayCount < filteredPosts.length;
 
   const loadMore = useCallback(() => {
     if (hasMore) {
-      setDisplayCount((prev) => Math.min(prev + siteConfig.postsPerPage, posts.length));
+      setDisplayCount((prev) => Math.min(prev + siteConfig.postsPerPage, filteredPosts.length));
     }
-  }, [hasMore, posts.length]);
+  }, [hasMore, filteredPosts.length]);
+
+  useEffect(() => {
+    setDisplayCount(siteConfig.postsPerPage);
+  }, [selectedTag]);
 
   useEffect(() => {
     const loader = loaderRef.current;
@@ -34,10 +50,46 @@ export default function PostList({ posts }: { posts: Post[] }) {
     return () => observer.disconnect();
   }, [loadMore]);
 
-  const visiblePosts = posts.slice(0, displayCount);
+  const visiblePosts = filteredPosts.slice(0, displayCount);
+
+  const sortedTags = tags
+    ? Object.entries(tags).sort((a, b) => b[1] - a[1])
+    : [];
 
   return (
     <div>
+      {sortedTags.length > 0 && (
+        <div className="mb-8 flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedTag(null)}
+            className={`rounded-full px-3 py-1 text-sm transition-colors ${
+              selectedTag === null
+                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+            }`}
+          >
+            전체 ({posts.length})
+          </button>
+          {sortedTags.map(([tag, count]) => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+              className={`rounded-full px-3 py-1 text-sm transition-colors ${
+                selectedTag === tag
+                  ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+              }`}
+            >
+              #{tag} ({count})
+            </button>
+          ))}
+        </div>
+      )}
+
+      <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+        {selectedTag ? `#${selectedTag}` : "전체"} · {filteredPosts.length}개의 글
+      </p>
+
       <div className="space-y-0">
         {visiblePosts.map((post) => (
           <PostCard key={post.slug} post={post} />
@@ -50,9 +102,15 @@ export default function PostList({ posts }: { posts: Post[] }) {
         </div>
       )}
 
-      {!hasMore && posts.length > 0 && (
+      {!hasMore && filteredPosts.length > 0 && (
         <p className="py-8 text-center text-sm text-slate-500 dark:text-slate-400">
           더 이상 글이 없습니다
+        </p>
+      )}
+
+      {filteredPosts.length === 0 && (
+        <p className="py-8 text-center text-sm text-slate-500 dark:text-slate-400">
+          해당 태그의 글이 없습니다
         </p>
       )}
     </div>

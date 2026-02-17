@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getPublishedPosts } from "@/lib/posts";
+import { getPublishedPosts, getAllTags } from "@/lib/posts";
 import PostList from "@/components/blog/PostList";
 
 export const metadata: Metadata = {
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const posts = getPublishedPosts();
+  const tags = getAllTags();
 
   return (
     <div className="mx-auto max-w-[720px]">
@@ -16,11 +17,8 @@ export default function BlogPage() {
         <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
           전체 글
         </h1>
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-          총 {posts.length}개의 글
-        </p>
       </div>
-      <PostList posts={posts} />
+      <PostList posts={posts} tags={tags} />
     </div>
   );
 }

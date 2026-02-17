@@ -4,6 +4,8 @@ import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import SearchDialog from "@/components/search/SearchDialog";
+import ScrollToTop from "./ScrollToTop";
+import ReadingProgress from "./ReadingProgress";
 
 export default function ClientLayout({
   children,
@@ -20,6 +22,8 @@ export default function ClientLayout({
       </main>
       <Footer />
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+      <ScrollToTop />
+      <ReadingProgress />
     </>
   );
 }

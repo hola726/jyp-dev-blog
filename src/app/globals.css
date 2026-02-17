@@ -44,10 +44,25 @@
   @apply opacity-100;
 }
 
-/* Dual theme support */
-html:not(.dark) [data-theme="dark"],
-html.dark [data-theme="light"] {
-  display: none;
+/* Dual theme support - CSS variable based */
+[data-rehype-pretty-code-figure] pre {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+[data-rehype-pretty-code-figure] span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style, inherit);
+}
+
+html.dark [data-rehype-pretty-code-figure] pre {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+html.dark [data-rehype-pretty-code-figure] span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style, inherit);
 }
 
 /* Medium-style prose */

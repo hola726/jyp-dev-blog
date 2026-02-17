@@ -88,7 +88,7 @@ export default function TOC() {
       </nav>
 
       {/* Mobile TOC */}
-      <div className="mb-6 xl:hidden">
+      <div className="mb-10 xl:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex w-full items-center justify-between rounded-lg border border-slate-200 px-4 py-3 text-sm font-medium text-slate-900 dark:border-slate-700 dark:text-slate-100"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ChevronDown, List } from "lucide-react";
 
 interface TocItem {
@@ -9,30 +9,34 @@ interface TocItem {
   level: number;
 }
 
-function extractHeadings(content: string): TocItem[] {
-  const headingRegex = /^#{2,3}\s+(.+)$/gm;
-  const items: TocItem[] = [];
-  let match;
-
-  while ((match = headingRegex.exec(content)) !== null) {
-    const level = match[0].indexOf(" ");
-    const text = match[1].trim();
-    const id = text
-      .toLowerCase()
-      .replace(/[^a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s-]/g, "")
-      .replace(/\s+/g, "-");
-    items.push({ id, text, level });
-  }
-
-  return items;
-}
-
-export default function TOC({ content }: { content: string }) {
+export default function TOC() {
+  const [headings, setHeadings] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const headings = extractHeadings(content);
+
+  const extractHeadingsFromDOM = useCallback(() => {
+    const elements = document.querySelectorAll("article h2, article h3");
+    const items: TocItem[] = [];
+    elements.forEach((el) => {
+      if (el.id && el.textContent) {
+        items.push({
+          id: el.id,
+          text: el.textContent,
+          level: el.tagName === "H2" ? 2 : 3,
+        });
+      }
+    });
+    return items;
+  }, []);
 
   useEffect(() => {
+    const items = extractHeadingsFromDOM();
+    setHeadings(items);
+  }, [extractHeadingsFromDOM]);
+
+  useEffect(() => {
+    if (headings.length === 0) return;
+
     const elements = headings
       .map((h) => document.getElementById(h.id))
       .filter(Boolean) as HTMLElement[];

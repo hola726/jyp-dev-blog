@@ -59,7 +59,7 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
   );
 
   const navigateToPost = (slug: string) => {
-    onOpenChange(false);
+    handleClose();
     router.push(`/blog/${slug}`);
   };
 
@@ -73,20 +73,35 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
     } else if (e.key === "Enter" && results[selectedIndex]) {
       navigateToPost(results[selectedIndex].slug);
     } else if (e.key === "Escape") {
-      onOpenChange(false);
+      handleClose();
     }
+  };
+
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      requestAnimationFrame(() => setVisible(true));
+    } else {
+      setVisible(false);
+    }
+  }, [open]);
+
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(() => onOpenChange(false), 150);
   };
 
   if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh]"
-      onClick={() => onOpenChange(false)}
+      className={`fixed inset-0 z-[100] flex items-start justify-center pt-[20vh] transition-opacity duration-150 ${visible ? "opacity-100" : "opacity-0"}`}
+      onClick={handleClose}
     >
       <div className="fixed inset-0 bg-black/50" />
       <div
-        className="relative z-10 w-full max-w-lg rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900"
+        className={`relative z-10 w-full max-w-lg rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900 transition-all duration-150 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 dark:border-slate-700">
@@ -101,7 +116,7 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-slate-500 dark:text-slate-100 dark:placeholder:text-slate-400"
           />
           <button
-            onClick={() => onOpenChange(false)}
+            onClick={handleClose}
             className="rounded-md p-1 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="h-4 w-4 text-slate-500 dark:text-slate-400" />

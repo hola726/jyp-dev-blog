@@ -90,7 +90,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </header>
 
         {/* Mobile TOC */}
-        <TOC content={post.body} />
+        <TOC />
 
         {/* Content */}
         <div className="prose-medium">
@@ -100,7 +100,7 @@ export default async function PostPage({ params }: PostPageProps) {
         {/* Desktop TOC sidebar - positioned outside content */}
         <aside className="hidden xl:block absolute top-0 left-full ml-10 w-[200px]">
           <div className="sticky top-24">
-            <TOC content={post.body} />
+            <TOC />
           </div>
         </aside>
 

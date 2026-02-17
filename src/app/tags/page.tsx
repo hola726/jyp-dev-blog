@@ -24,7 +24,7 @@ export default function TagsPage() {
             className="text-base text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
           >
             #{tag}
-            <span className="ml-1 text-sm text-slate-300 dark:text-slate-600">
+            <span className="ml-1 text-sm text-slate-500 dark:text-slate-400">
               {count}
             </span>
           </Link>

@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className="bg-white font-[Pretendard_Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif] text-slate-900 antialiased dark:bg-neutral-950 dark:text-slate-100">
+      <body suppressHydrationWarning className="bg-white font-[Pretendard_Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif] text-slate-900 antialiased dark:bg-neutral-950 dark:text-slate-100">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>

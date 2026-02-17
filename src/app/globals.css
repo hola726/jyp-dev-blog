@@ -65,6 +65,15 @@ html.dark [data-rehype-pretty-code-figure] span {
   font-style: var(--shiki-dark-font-style, inherit);
 }
 
+/* Accessibility: improve code comment contrast */
+[data-rehype-pretty-code-figure] span[style*="--shiki-light: #6A737D"] {
+  color: #57606a !important;
+}
+
+html.dark [data-rehype-pretty-code-figure] span[style*="--shiki-dark: #7F848E"] {
+  color: #9198a1 !important;
+}
+
 /* Heading anchor links - remove link styling */
 .prose a.anchor {
   color: inherit;

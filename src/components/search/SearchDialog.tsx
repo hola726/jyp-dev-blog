@@ -118,6 +118,7 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
           <button
             onClick={handleClose}
             className="rounded-md p-1 hover:bg-slate-100 dark:hover:bg-slate-800"
+            aria-label="검색 닫기"
           >
             <X className="h-4 w-4 text-slate-500 dark:text-slate-400" />
           </button>

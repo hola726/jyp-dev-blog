@@ -98,7 +98,7 @@ export default function PostList({ posts, tags }: PostListProps) {
 
       {hasMore && (
         <div ref={loaderRef} className="flex justify-center py-8">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" role="status" aria-label="더 많은 글 로드 중" />
         </div>
       )}
 

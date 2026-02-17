@@ -50,7 +50,7 @@ export default function AboutPage() {
           LinkedIn
         </a>
         <a
-          href="mailto:contact@jyp.dev"
+          href={`mailto:${siteConfig.author.email}`}
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
         >
           <Mail className="h-4 w-4" />

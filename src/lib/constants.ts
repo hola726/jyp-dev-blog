@@ -5,12 +5,13 @@ export const siteConfig = {
   url: "https://jyp-dev-blog.vercel.app",
   author: {
     name: "JYP",
-    github: "https://github.com/jyp",
-    linkedin: "https://linkedin.com/in/jyp",
+    github: "https://github.com/hola726",
+    linkedin: "https://www.linkedin.com/in/jyp96",
+    email: "wodbs720@gmail.com",
   },
   links: {
-    github: "https://github.com/jyp",
-    linkedin: "https://linkedin.com/in/jyp",
+    github: "https://github.com/hola726",
+    linkedin: "https://www.linkedin.com/in/jyp96",
   },
   postsPerPage: 10,
   giscus: {

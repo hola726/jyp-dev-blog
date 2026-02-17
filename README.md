@@ -32,7 +32,7 @@ content/posts/       # MDX 블로그 포스트
 src/
 ├── app/             # Next.js App Router 페이지
 │   ├── blog/        # 블로그 목록 및 상세
-│   ├── tags/        # 태그별 필터링
+│   ├── tags/        # 태그 디렉토리 및 태그별 상세
 │   ├── about/       # 소개 페이지
 │   └── feed.xml/    # RSS 피드
 ├── components/      # React 컴포넌트
@@ -48,9 +48,11 @@ src/
 
 - MDX 기반 블로그 포스팅
 - 다크/라이트 테마 전환
-- 태그 기반 분류
+- 태그 디렉토리 및 인라인 태그 필터
+- 무한 스크롤 (IntersectionObserver)
 - 클라이언트 사이드 검색
 - 코드 구문 하이라이팅 (Shiki)
 - 목차(TOC) 자동 생성
 - RSS 피드, Sitemap, robots.txt
 - Giscus 댓글
+- 보안 헤더 (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
